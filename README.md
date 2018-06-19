@@ -33,9 +33,11 @@
     - Sending source code from the vscode to the engine
 
 - Language support
-  - Work in progress:
+  - Available features:
     - Require module name completer
     - Module's function completer
+    - Hover information provider for IoT.js specific module functions
+    
 
 # Requirements
 - The latest Vscode which is available [here](https://code.visualstudio.com/Download).
