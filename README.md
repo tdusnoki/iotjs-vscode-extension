@@ -75,7 +75,7 @@ These configuration options are required. Manifest:
 - `address`: IP address on which the server listening. Default is `localhost`
 - `port`: Debug port to attach to. Default is `5001`
 - `localRoot`: The local source root directoy, most cases this is the `${workspaceRoot}`
-- `stopOnEntry`: Autmoatically stop the program after launch, the IoT.js will stop on the first breakpoint for now, no matter that is enabled or not.
+- `stopOnEntry`: Automatically stop the program after launch, the IoT.js will stop on the first breakpoint for now, no matter that is enabled or not.
 - `debugLog`: The type of the debug log, you can choose from 0 to 4:
     - 0: none
     - 1: Error (show errors only)
@@ -166,7 +166,7 @@ absolute path to executable (e.g.:/path/to/iotjs/build/x86_64-linux/debug/bin/io
 - `address`: IP address on which the server listening. Default is `localhost`
 - `port`: Debug port to attach to. Default is `5001`
 - `localRoot`: The local source root directoy, most cases this is the `${workspaceRoot}`
-- `stopOnEntry`: Autmoatically stop the program after launch, the IoT.js will stop on the first breakpoint for now, no matter that is enabled or not.
+- `stopOnEntry`: Automatically stop the program after launch, the IoT.js will stop on the first breakpoint for now, no matter that is enabled or not.
 - `debugLog`: The type of the debug log, you can choose from 0 to 4:
     - 0: none
     - 1: Error (show errors only)
