@@ -26,6 +26,7 @@ import * as Cp from 'child_process';
 const iotjs = require('./IotjsFunctions.json');
 let tizenStudioPath = undefined;
 let IoTjsPath = undefined;
+let address = undefined;
 let lastModified = {
   filePath: undefined,
   mtime: undefined
@@ -269,6 +270,9 @@ const getPath = async () => {
       if (i.IoTjsPath) {
         IoTjsPath = i.IoTjsPath;
       }
+      if (i.address) {
+        address = i.address;
+      }
     });
     Object.keys(require.cache).forEach((id) => {
       if (/launch.json/.test(id)) {
@@ -276,7 +280,23 @@ const getPath = async () => {
       }
     });
   });
+};
 
+const deployTizen = () => {
+  if (address === 'localhost') {
+    vscode.window.showErrorMessage('Cannot deploy Tizen package to localhost.');
+    return;
+  }
+  if (tizenStudioPath && address) {
+    const currentWorkSpace = vscode.workspace.workspaceFolders[0].uri.path;
+    const appInstallPath = path.join(__dirname, './InstallTizenApp.sh');
+    const tizenAppInstall = Cp.spawn(appInstallPath, [tizenStudioPath,
+                                                      currentWorkSpace,
+                                                      address]);
+    tizenAppInstall.stdout.on('data', InstallLog => {
+      console.log(InstallLog.toString());
+    });
+  }
 };
 
 export const activate = (context: vscode.ExtensionContext) => {
@@ -284,6 +304,7 @@ export const activate = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(
     vscode.commands.registerCommand('iotjs-debug.provideInitialConfigurations', provideInitialConfigurations),
     vscode.commands.registerCommand('iotjs-debug.createTizenProject', checkPath),
+    vscode.commands.registerCommand('iotjs-debug.deployTizen', deployTizen),
     vscode.debug.onDidReceiveDebugSessionCustomEvent(e => processCustomEvent(e)),
     vscode.languages.registerCompletionItemProvider(JS_MODE, {
       provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {

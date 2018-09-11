@@ -81,7 +81,8 @@
     "onLanguage:javascript",
     "onDebug",
     "onCommand:iotjs-debug.initialConfigurations",
-    "onCommand:iotjs-debug.createTizenProject"
+    "onCommand:iotjs-debug.createTizenProject",
+    "onCommand:iotjs-debug.deployTizen"
   ],
   "main": "./out/extension.js",
   "files": [
@@ -91,11 +92,20 @@
     "commands":[ {
       "command": "iotjs-debug.createTizenProject",
       "title": "Create IoT.js Tizen Project"
-    } 
+    },
+    {
+      "command": "iotjs-debug.deployTizen",
+      "title": "Deploy Tizen Package",
+      "icon": "./tizen.png"
+    }
     ],
     "menus": {
       "editor/title": [ {
         "command": "iotjs-debug.createTizenProject",
+        "group": "navigation"
+      },
+      {
+        "command": "iotjs-debug.deployTizen",
         "group": "navigation"
       }
       ]

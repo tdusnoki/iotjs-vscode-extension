@@ -23,6 +23,7 @@ TIZEN_PROJECT=$2
 DEVICE_IP=$3
 export PATH=$PATH:$TIZEN_STUDIO/tools/ide/bin
 export PATH=$PATH:$TIZEN_STUDIO/tools
+
 sed -i '/peripheralio/d' $TIZEN_PROJECT/tizen-manifest.xml
 tizen cli-config "profiles.path=$TIZEN_STUDIO-data/profile/profiles.xml"
 tizen build-native -C Debug -a arm -c gcc -r iot-headless-4.0-device.core -- $TIZEN_PROJECT/
@@ -30,4 +31,5 @@ cd $TIZEN_PROJECT/Debug
 tizen package -t tpk
 PACKAGE="$(find $TIZEN_PROJECT/Debug/ -iname '*.tpk')"
 sdb connect $DEVICE_IP
+sdb uninstall $PACKAGE
 sdb install $PACKAGE
