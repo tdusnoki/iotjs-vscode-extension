@@ -1,0 +1,91 @@
+{
+    "Import external module.": {
+    "prefix": "require",
+    "description": "Import external module.",
+    "body": ["var $1 = require('$2');"]
+  },
+    "adc.open": {
+    "prefix": "adc.open",
+    "description": "Opens an ADC pin with the specified configuration asynchronously.",
+    "body": ["var $1 = $2.open({",
+             "  device: '${3:string}'",
+             "},function(err) {",
+             "    if (err) {",
+             "      throw err;",
+             "    }",
+             "  });"
+    ]
+  },
+  "adc.openSync": {
+    "prefix": "adc.openSync",
+    "description": "Opens an ADC pin with the specified configuration synchronously.",
+    "body": ["var $1 = $2.openSync({",
+             "  device: '${3:string}'",
+             "});"
+    ]
+  },
+  "adcpin.read": {
+    "prefix": "adcpin.read",
+    "description": "Reads the analog value from the pin asynchronously.",
+    "body": ["$1.read(function(err, value) {",
+             "  if (err) {",
+             "    throw err;",
+             "  }",
+             "  console.log('value:', value);",
+             "});"
+    ]
+  },
+  "adcpin.readSync": {
+    "prefix": "adcpin.readSync",
+    "description": "Reads the analog value from the pin synchronously.",
+    "body": ["var $1 = $2.readSync();",
+             "console.log('value: ', value)"
+    ]
+  },
+  "adcpin.close": {
+    "prefix": "adcpin.close",
+    "description": "Closes ADC pin asynchronously. This function must be called after the work of ADC finished.",
+    "body": ["$1.close(function(err) {",
+             "  if (err) {",
+             "    throw err;",
+             "  }",
+             "});"
+    ]
+  },
+  "adcpin.closeSync": {
+    "prefix": "adcpin.closeSync",
+    "description": "Closes ADC pin synchronously. This function must be called after the work of ADC finished.",
+    "body": "$1.closeSync();"
+  },
+  "ble.onAdvertisingStart": {
+    "prefix": "ble.on('advertisingStart'",
+    "description": "Emitted when advertisement starts.",
+    "body": [
+      "${1:ble}.on('advertisingStart', function(error) {", 
+      "  console.log('on -> advertisingStart: ' + (error ? 'error ' + error : 'success'));",
+      "  if (!error) {",
+      "    ${1:ble}.setServices([",
+      "      // service data",
+      "    ]);",
+      "  }",
+      "});"
+    ]
+  },
+  "ble.onStateChange": {
+    "prefix": "ble.on('stateChange'",
+    "description": "Emitted when adapter state is changed.",
+    "body": [
+      "${1:ble}.on('stateChange', function(state){",
+      "  console.log('onStateChange: ' + state);",
+      "  if (state == 'poweredOn') {",
+      "    ${1:ble}.startAdvertising('iotjs', ['data'], function(err) {",
+      "    });",
+      "  } else {",
+      "    ${1:ble}.stopAdvertising(function(err) {",
+      "    });",
+      "  }",
+      "});"
+    ]
+  }
+
+}

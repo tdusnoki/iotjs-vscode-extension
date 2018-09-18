@@ -102,6 +102,12 @@
         }
       ]
     },
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "snippets/javascript.json"
+      }
+    ],
     "breakpoints": [
       {
         "language": "javascript"
