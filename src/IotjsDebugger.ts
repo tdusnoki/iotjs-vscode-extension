@@ -219,9 +219,6 @@ class IotjsDebugSession extends DebugSession {
     .catch(error => {
       this.log(error.message, LOG_LEVEL.ERROR);
       this.sendErrorResponse(response, error);
-    })
-    .then(() => {
-      this.sendEvent(new InitializedEvent());
     });
   }
 
@@ -596,6 +593,7 @@ class IotjsDebugSession extends DebugSession {
       } else {
         write(src);
       }
+      this.sendEvent(new InitializedEvent());
     }
   }
 
