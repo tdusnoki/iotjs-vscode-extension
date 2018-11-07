@@ -48,6 +48,7 @@ class IotjsDebugSession extends DebugSession {
   private _debuggerClient: JerryDebuggerClient;
   private _protocolhandler: JerryDebugProtocolHandler;
   private _sourceSendingOptions: SourceSendingOptions;
+  private _fileCounter: number = 0;
 
   public constructor() {
     super();
@@ -455,10 +456,15 @@ class IotjsDebugSession extends DebugSession {
     switch (command) {
       case 'sendSource': {
         this._sourceSendingOptions.state = SOURCE_SENDING_STATES.IN_PROGRESS;
-        this._protocolhandler.sendClientSource(args.program.name, args.program.source)
+        // tslint:disable-next-line:max-line-length
+        this._protocolhandler.sendClientSource(args.program.name[this._fileCounter], args.program.source[this._fileCounter])
           .then(() => {
+            this._fileCounter++;
+            this._sourceSendingOptions.state = SOURCE_SENDING_STATES.NOP;
+            if (this._fileCounter === args.program.name.length) {
+              this._sourceSendingOptions.state = SOURCE_SENDING_STATES.LAST_SENT;
+            }
             this.log('Source has been sent to the engine.', LOG_LEVEL.SESSION);
-            this._sourceSendingOptions.state = SOURCE_SENDING_STATES.LAST_SENT;
             this.sendResponse(response);
           })
           .catch(error => {

@@ -30,6 +30,9 @@ let lastModified = {
   filePath: undefined,
   mtime: undefined
 };
+let sourceChosen = false;
+let pathName: string[];
+let source: string[];
 
 const defaultModules = [{
   link: 'process',
@@ -129,34 +132,37 @@ const getListOfFiles = (): string[] => {
   return wsFiles;
 };
 
-const getProgramName = (): Thenable<string> => {
+const getProgramName = (): Thenable<string[]> => {
   return vscode.window.showQuickPick(getListOfFiles(), {
     placeHolder: 'Select a file you want to debug',
+    canPickMany: true,
     ignoreFocusOut: true
   });
 };
 
-const getProgramSource = (path: string): string => {
-  return fs.readFileSync(path, {
-    encoding: 'utf8',
-    flag: 'r'
+const getProgramSource = (path: string[]): string[] => {
+  return path.map((p) => {
+    return fs.readFileSync(p, {
+      encoding: 'utf8',
+      flag: 'r'
+    });
   });
 };
 
 const processCustomEvent = async (e: vscode.DebugSessionCustomEvent): Promise<any> => {
   switch (e.event) {
     case 'waitForSource': {
-      if (vscode.debug.activeDebugSession) {
-        const pathName = await getProgramName().then(path => path);
-        const source = getProgramSource(pathName);
-
-        vscode.debug.activeDebugSession.customRequest('sendSource', {
-          program: {
-            name: pathName.split(path.delimiter).pop(),
-            source
-          }
-        });
+      if (vscode.debug.activeDebugSession && !sourceChosen) {
+        sourceChosen = true;
+        pathName = await getProgramName().then(path => path);
+        source = getProgramSource(pathName);
       }
+      vscode.debug.activeDebugSession.customRequest('sendSource', {
+        program: {
+          name: pathName,
+          source: source
+        }
+      });
       return true;
     }
     default:

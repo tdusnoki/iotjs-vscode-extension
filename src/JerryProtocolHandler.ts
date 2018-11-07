@@ -809,12 +809,15 @@ export class JerryDebugProtocolHandler {
     if (!this.waitForSourceEnabled) {
       return Promise.reject(new Error('wait-for-source not enabled'));
     }
+    this.log('JON A FAJL!!!', 4);
 
-    this.waitForSourceEnabled = false;
+    // this.waitForSourceEnabled = false;
     let array = stringToCesu8(`${fileName}\0${fileSourceCode}`, 5, this.byteConfig );
     const byteLength = array.byteLength;
 
     array[0] = SP.CLIENT.JERRY_DEBUGGER_CLIENT_SOURCE;
+
+    this.log(array, 4);
 
     if (byteLength <= this.maxMessageSize) {
       return this.sendSimpleRequest(array);
@@ -835,7 +838,7 @@ export class JerryDebugProtocolHandler {
 
   public sendClientSourceControl(code: number): Promise<any> {
     const validCodes: number[] = [SP.CLIENT.JERRY_DEBUGGER_NO_MORE_SOURCES, SP.CLIENT.JERRY_DEBUGGER_CONTEXT_RESET];
-
+    this.log(code + ' IDE ELJUTSZ????', 4);
     if (validCodes.indexOf(code) === -1) {
       return Promise.reject(new Error('Invalid source sending control code.'));
     }
